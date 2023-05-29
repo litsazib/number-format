@@ -9,11 +9,17 @@ const Profile = () => {
   const usaRegx = /^(\d{3})(\d{3})(\d{4})$/;
 
   const formater = (phoneNumber) => {
+    console.log(phoneNumber.length)
     try {
-      if (!phoneNumber) {
-        setError(null);
-        return null;
+      if(phoneNumber.length < 14) {
+        setError("Invalid phone number format");
+      }else {
+        setError(null)
       }
+      // if (!phoneNumber) {
+      //   setError(null);
+      //   return null;
+      // }
       const number = phoneNumber.replace(/\D/g, ''); // Remove non-digit characters
       if (number.length === 0) {
         setFormattedNumber('');
@@ -70,7 +76,7 @@ const Profile = () => {
           class="form-control"
         />
       </p>
-      {error && <p>Error: {error}</p>}
+      {error && <p style={{'color':'red'}}>Error: {error}</p>}
     </div>
   );
 };
