@@ -1,20 +1,15 @@
 import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
-import PhoneInput from "react-phone-number-input";
 
 const Profile = () => {
   const [value, setValue] = useState("");
   const [error, setError] = useState(null);
   const [formattedNumber, setFormattedNumber] = useState('');
+
   const usaRegx = /^(\d{3})(\d{3})(\d{4})$/;
 
   const formater = (phoneNumber) => {
     try {
-      if(phoneNumber.length < 14) {
-        setError("Invalid phone number format");
-      }else {
-        setError(null)
-      }
       const number = phoneNumber.replace(/\D/g, ''); // Remove non-digit characters
       if (number.length === 0) {
         setFormattedNumber('');
@@ -33,24 +28,35 @@ const Profile = () => {
         setFormattedNumber(`(${number.slice(0, 3)}) ${number.slice(3, 6)}-${number.slice(6)}`);
         return;
       }
-      const reg = number.match(usaRegx);
+  
+      const reg = number.match(/^(\d{3})(\d{3})(\d{4})$/);
       if (reg) {
         setError(null);
-        return "(" + reg[1] + ") " + reg[2] + "-" + reg[3];
+        setFormattedNumber(`(${reg[1]}) ${reg[2]}-${reg[3]}`);
+      } else {
+        setFormattedNumber(null);
       }
-      return null;
     } catch (error) {
       console.log(error);
     }
   };
 
+
   const handleChange = (e) => {
     let number = e.target.value;
-    formater(number)
-    // setValue(formater(number));
+    formater(number);
+    setValue(number)
   };
 
-
+  // const handleKeyDown = (e) => {
+  //   // Check if the pressed key is a number
+  //   if (/^[0-9]$/.test(e.key)) {
+  //     console.log(e.key)
+  //     let number = e.key;
+  //     setValue(number);
+  //     formater(number);
+  //   }
+  // };
 
   return (
     <div>
@@ -64,15 +70,23 @@ const Profile = () => {
           required={true}
           name="Mobilenumber"
           pattern="(?:\(\d{3}\)|\d{3})[- ]?\d{3}[- ]?\d{4}"
-          maxlength="14"
+          maxLength="14"
           value={formattedNumber}
           onChange={handleChange}
-          class="form-control"
+          // onKeyDown={handleKeyDown}
+          className="form-control"
         />
       </p>
-      {error && <p style={{'color':'red'}}>Error: {error}</p>}
+      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
     </div>
   );
 };
 
 export default Profile;
+
+
+
+
+
+
+

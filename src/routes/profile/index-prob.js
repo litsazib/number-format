@@ -64,7 +64,7 @@ const Profile = () => {
           class="form-control"
         />
       </p>
-      {/* {error && <p>Error: {error}</p>} */}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };
